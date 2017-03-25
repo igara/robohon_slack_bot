@@ -24,8 +24,8 @@ https://my.slack.com/services/new/bot
 
 ``` 新規でsetting.js
 module.exports = {
-	bot_icon: "https://s3-us-west-2.amazonaws.com/slack-files2/bot_icons/2017-03-21/157374660738_48.png",
-	accsess_token: "xoxb-158052459063-2Z29mAVCzi0hcBBABKR9r1B1"
+	bot_icon: "XXXXXXXXXXXXXXX",
+	accsess_token: "XXXXXXXXXXXXXXX"
 };
 ```
 
