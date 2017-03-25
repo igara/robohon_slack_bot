@@ -13,6 +13,7 @@ const child_process = require("child_process");
 const git_pull_option = ["pull"];
 const git_log_option = ["log", "-n", "5"];
 const restart_option = [];
+const syonet_option = ["syonet.sh"];
 
 const controller = Botkit.slackbot({
 	debug: true
@@ -79,6 +80,28 @@ controller.hears(hears.release + " " + release.self, "direct_mention",(bot, mess
 		console.log(response);
 		const cli_exec = child_process.spawnSync("git", git_pull_option, {encoding: "utf-8"});
 		convo.say("僕を最新版にするね");
+		if (cli_exec.error) {
+			convo.say("失敗したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stderr);
+		} else {
+			convo.say("成功したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stdout);
+		}
+	};
+	bot.startConversation(message, ask_release);
+});
+
+/**
+ * @robohon release syonet.work を実行した時にロボホンbotを更新する
+ */
+controller.hears(hears.release + " " + release.syonet, "direct_mention",(bot, message) => {
+	console.log(message);
+	const ask_release = (response, convo) => {
+		console.log(response);
+		const cli_exec = child_process.spawnSync("sh", syonet_option, {encoding: "utf-8"});
+		convo.say("syonetを最新版にするね");
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
 			convo.say("結果もおしえるね");
