@@ -13,7 +13,8 @@ const child_process = require("child_process");
 const git_pull_option = ["pull"];
 const git_log_option = ["log", "-n", "5"];
 const restart_option = [];
-const syonet_option = ["syonet.sh"];
+const syonet_pull_option = ["syonet_pull.sh"];
+const syonet_log_option = ["syonet_log.sh"];
 
 const controller = Botkit.slackbot({
 	debug: true
@@ -100,7 +101,7 @@ controller.hears(hears.release + " " + release.syonet, "direct_mention",(bot, me
 	console.log(message);
 	const ask_release = (response, convo) => {
 		console.log(response);
-		const cli_exec = child_process.spawnSync("sh", syonet_option, {encoding: "utf-8"});
+		const cli_exec = child_process.spawnSync("sh", syonet_pull_option, {encoding: "utf-8"});
 		convo.say("syonetを最新版にするね");
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
@@ -119,6 +120,27 @@ controller.hears(hears.release + " " + release.syonet, "direct_mention",(bot, me
  * @robohon commit_log self を実行した時にログを教える
  */
 controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, message) => {
+	console.log(message);
+	const ask_commit_log = (response, convo) => {
+		console.log(response);
+		const cli_exec = child_process.spawnSync("sh", syonet_log_option, {encoding: "utf-8"});
+
+		if (cli_exec.error) {
+			convo.say("失敗したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stderr);
+		} else {
+			convo.say("syonetのリリースのログを5件おしえるね");
+			convo.say(cli_exec.stdout);
+		}
+	};
+	bot.startConversation(message, ask_commit_log);
+});
+
+/**
+ * @robohon commit_log syonet.work を実行した時にログを教える
+ */
+controller.hears(hears.commit_log + " " + release.syonet, "direct_mention",(bot, message) => {
 	console.log(message);
 	const ask_commit_log = (response, convo) => {
 		console.log(response);

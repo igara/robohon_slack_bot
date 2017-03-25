@@ -1,5 +1,5 @@
 node_modules
 memo.txt
 setting.js
-syonet.sh
-
+syonet_pull.sh
+syonet_log.sh
