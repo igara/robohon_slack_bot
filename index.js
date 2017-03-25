@@ -2,10 +2,9 @@
 const Botkit = require("botkit");
 
 /**
- * @const アクセストークンを取得
+ * @const access_tokenやbot_log
  */
-const token = require("./token.js");
-const bot_icon_url = require("./bot_icon_url.js");
+const setting = require("./setting.js");
 
 /**
  * @const コマンド実行関数
@@ -41,7 +40,7 @@ const release = {
 };
 
 controller.spawn({
-	token: token
+	token: setting.accsess_token
 }).startRTM((err,bot,payload) => {
 	// 初期処理
 	if (err) {
@@ -51,7 +50,7 @@ controller.spawn({
 			channel: "bot",
 			text: "再起動したよ",
 			username: "robohon",
-			icon_url: bot_icon_url
+			icon_url: setting.bot_icon
 		});
 	}
 });
