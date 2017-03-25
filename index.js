@@ -10,7 +10,8 @@ const token = require("./token.js");
  * @const コマンド実行関数
  */
 const child_process = require("child_process");
-const args = ["pull"];
+const git_pull_option = ["pull"];
+const git_log_option = ["log", "-n", "5"];
 
 const controller = Botkit.slackbot({
 	debug: true
@@ -22,6 +23,7 @@ const controller = Botkit.slackbot({
 const hears = {
 	help: "help",
 	release: "release",
+	commit_log: "commit_log",
 	weather: "weather",
 };
 
@@ -62,9 +64,8 @@ controller.hears(hears.release + " " + release.self, "direct_mention",(bot, mess
 	console.log(message);
 	const ask_release = (response, convo) => {
 		console.log(response);
+		const cli_exec = child_process.spawnSync("git", git_pull_option, {encoding: "utf-8"});
 		convo.say("僕を最新版にするね");
-		const cli_exec = child_process.spawnSync("git", args, {encoding: "utf-8"});
-
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
 			convo.say("結果もおしえるね");
@@ -76,6 +77,27 @@ controller.hears(hears.release + " " + release.self, "direct_mention",(bot, mess
 		}
 	};
 	bot.startConversation(message, ask_release);
+});
+
+/**
+ * @robohon commit_log self を実行した時にロボホンbotを更新する
+ */
+controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, message) => {
+	console.log(message);
+	const ask_commit_log = (response, convo) => {
+		console.log(response);
+		const cli_exec = child_process.spawnSync("git", git_log_option, {encoding: "utf-8"});
+
+		if (cli_exec.error) {
+			convo.say("失敗したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stderr);
+		} else {
+			convo.say("ぼくのリリースのログを5件おしえるね");
+			convo.say(cli_exec.stdout);
+		}
+	};
+	bot.startConversation(message, ask_commit_log);
 });
 
 /**
