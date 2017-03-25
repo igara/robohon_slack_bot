@@ -119,10 +119,17 @@ controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, m
  */
 controller.hears(hears.restart, "direct_mention",(bot, message) => {
 	const ask = (response, convo) => {
-		console.log(response);
-		convo.say("再起動するね");
+		convo.ask("ほんとうに再起動してもいい？もし再起動するときはyesっていってね", function(response, convo) {
+			console.log(response);
+			if(response.text == "yes") {
+				convo.say("わかった〜再起動するね");
+				ask_restart(response, convo);
+			} else {
+				convo.say("再起動をキャンセルするね");
+			}
+			convo.next();
+		});
 	};
-	bot.startConversation(message, ask);
 	const ask_restart = (response, convo) => {
 		console.log(response);
 		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
@@ -132,5 +139,5 @@ controller.hears(hears.restart, "direct_mention",(bot, message) => {
 			console.log("restart");
 		}
 	};
-	bot.startConversation(message, ask_restart);
+	bot.startConversation(message, ask);
 });
