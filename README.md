@@ -20,7 +20,11 @@ https://my.slack.com/services/new/bot
 
 ## bot起動
 
-token.jsに適切なAccess Tokenに変更する
+新規でtoken.jsを作成し、適切なAccess Tokenを追加する
+``` token.js
+module.exports = "XXXXXXXX";
+```
+
 
 ```
 node index.js
