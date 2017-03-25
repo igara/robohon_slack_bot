@@ -118,13 +118,11 @@ controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, m
  * @robohon restart を実行した時にbotを再起動する
  */
 controller.hears(hears.restart, "direct_mention",(bot, message) => {
-	console.log(message);
-	bot.say({
-		channel: "bot",
-		text: "再起動するね",
-		username: "robohon",
-		icon_url: bot_icon_url
-	});
+	const ask = (response, convo) => {
+		console.log(response);
+		convo.say("再起動するね");
+	};
+	bot.startConversation(message, ask);
 	const ask_restart = (response, convo) => {
 		console.log(response);
 		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
