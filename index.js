@@ -12,6 +12,7 @@ const token = require("./token.js");
 const child_process = require("child_process");
 const git_pull_option = ["pull"];
 const git_log_option = ["log", "-n", "5"];
+const restart_option = [];
 
 const controller = Botkit.slackbot({
 	debug: true
@@ -24,6 +25,7 @@ const hears = {
 	help: "help",
 	release: "release",
 	commit_log: "commit_log",
+	restart: "restart",
 };
 
 const path = require("path");
@@ -79,7 +81,7 @@ controller.hears(hears.release + " " + release.self, "direct_mention",(bot, mess
 });
 
 /**
- * @robohon commit_log self を実行した時にロボホンbotを更新する
+ * @robohon commit_log self を実行した時にログを教える
  */
 controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, message) => {
 	console.log(message);
@@ -97,4 +99,24 @@ controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, m
 		}
 	};
 	bot.startConversation(message, ask_commit_log);
+});
+
+/**
+ * @robohon restart を実行した時にbotを再起動する
+ */
+controller.hears(hears.restart, "direct_mention",(bot, message) => {
+	console.log(message);
+	const ask_restart = (response, convo) => {
+		console.log(response);
+		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
+		convo.say("再起動するね");
+		if (cli_exec.error) {
+			convo.say("失敗したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stderr);
+		} else {
+			console.log("restart");
+		}
+	};
+	bot.startConversation(message, ask_restart);
 });

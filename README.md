@@ -30,6 +30,11 @@ module.exports = "XXXXXXXX";
 node index.js
 ```
 
+## コマンドについて
+
+- restart  
+サーバ側でreboot実行がされるのでlinux系は要systemdのserviceを変更すること
+
 ## 使用ライブラリ
 
 [Botkit](https://github.com/howdyai/botkit)  
