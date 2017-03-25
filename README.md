@@ -34,6 +34,11 @@ node index.js
 
 - restart  
 サーバ側でreboot実行がされるのでlinux系は要systemdのserviceを変更すること
+```
+# systemd記述例
+(cd [robohon_slack_botのディレクトリまでのフルパス] && [nodeコマンドのフルパス] index.js) &
+
+```
 
 ## 使用ライブラリ
 
