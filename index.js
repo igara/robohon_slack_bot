@@ -119,14 +119,17 @@ controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, m
  */
 controller.hears(hears.restart, "direct_mention",(bot, message) => {
 	console.log(message);
+	bot.say({
+		channel: "bot",
+		text: "再起動するね",
+		username: "robohon",
+		icon_url: bot_icon_url
+	});
 	const ask_restart = (response, convo) => {
 		console.log(response);
-		convo.say("再起動するね");
 		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
 		if (cli_exec.error) {
-			convo.say("失敗したよ");
-			convo.say("結果もおしえるね");
-			convo.say(cli_exec.stderr);
+			console.log(cli_exec.stderr);
 		} else {
 			console.log("restart");
 		}
