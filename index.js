@@ -108,8 +108,8 @@ controller.hears(hears.restart, "direct_mention",(bot, message) => {
 	console.log(message);
 	const ask_restart = (response, convo) => {
 		console.log(response);
-		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
 		convo.say("再起動するね");
+		const cli_exec = child_process.spawnSync("reboot", restart_option, {encoding: "utf-8"});
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
 			convo.say("結果もおしえるね");
