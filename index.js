@@ -5,6 +5,7 @@ const Botkit = require("botkit");
  * @const アクセストークンを取得
  */
 const token = require("./token.js");
+const bot_icon_url = require("./bot_icon_url.js");
 
 /**
  * @const コマンド実行関数
@@ -41,7 +42,19 @@ const release = {
 
 controller.spawn({
 	token: token
-}).startRTM();
+}).startRTM((err,bot,payload) => {
+	// 初期処理
+	if (err) {
+		throw new Error("Could not connect to Slack");
+	} else {
+		bot.say({
+			channel: "bot",
+			text: "再起動したよ",
+			username: "robohon",
+			icon_url: bot_icon_url
+		});
+	}
+});
 
 /**
  * @robohon help を実行した時にコマンド一覧を教えてくれる

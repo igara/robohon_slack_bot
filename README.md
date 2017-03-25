@@ -21,10 +21,16 @@ https://my.slack.com/services/new/bot
 ## bot起動
 
 新規でtoken.jsを作成し、適切なAccess Tokenを追加する
+
 ``` token.js
 module.exports = "XXXXXXXX";
 ```
 
+該当するbot_iconをbot_icon_url.jsと言うファイル内に記載する
+
+``` bot_icon_url.js
+module.exports = "XXXXXXXX";
+```
 
 ```
 node index.js
