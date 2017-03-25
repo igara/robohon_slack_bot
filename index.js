@@ -123,14 +123,14 @@ controller.hears(hears.commit_log + " " + release.self, "direct_mention",(bot, m
 	console.log(message);
 	const ask_commit_log = (response, convo) => {
 		console.log(response);
-		const cli_exec = child_process.spawnSync("sh", syonet_log_option, {encoding: "utf-8"});
+		const cli_exec = child_process.spawnSync("git", git_log_option, {encoding: "utf-8"});
 
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
 			convo.say("結果もおしえるね");
 			convo.say(cli_exec.stderr);
 		} else {
-			convo.say("syonetのリリースのログを5件おしえるね");
+			convo.say("ぼくのリリースのログを5件おしえるね");
 			convo.say(cli_exec.stdout);
 		}
 	};
@@ -144,14 +144,14 @@ controller.hears(hears.commit_log + " " + release.syonet, "direct_mention",(bot,
 	console.log(message);
 	const ask_commit_log = (response, convo) => {
 		console.log(response);
-		const cli_exec = child_process.spawnSync("git", git_log_option, {encoding: "utf-8"});
+		const cli_exec = child_process.spawnSync("sh", syonet_log_option, {encoding: "utf-8"});
 
 		if (cli_exec.error) {
 			convo.say("失敗したよ");
 			convo.say("結果もおしえるね");
 			convo.say(cli_exec.stderr);
 		} else {
-			convo.say("ぼくのリリースのログを5件おしえるね");
+			convo.say("syonetのリリースのログを5件おしえるね");
 			convo.say(cli_exec.stdout);
 		}
 	};
