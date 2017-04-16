@@ -15,6 +15,7 @@ const git_log_option = ["log", "-n", "5"];
 const restart_option = [];
 const syonet_pull_option = ["syonet_pull.sh"];
 const syonet_log_option = ["syonet_log.sh"];
+const syonet_install_option = ["syonet_install.sh"];
 
 const controller = Botkit.slackbot({
 	debug: true
@@ -28,6 +29,7 @@ const hears = {
 	release: "release",
 	commit_log: "commit_log",
 	restart: "restart",
+	install: "install",
 };
 
 const path = require("path");
@@ -37,6 +39,11 @@ const dir = path.resolve("");
  * @const リリースするアプリケーションの種類
  */
 const release = {
+	self: "self",
+	syonet: "syonet.work"
+};
+
+const install = {
 	self: "self",
 	syonet: "syonet.work"
 };
@@ -184,4 +191,26 @@ controller.hears(hears.restart, "direct_mention",(bot, message) => {
 		}
 	};
 	bot.startConversation(message, ask);
+});
+
+/**
+ * @robohon install syonet.work を実行した時にロボホンbotを更新する
+ */
+controller.hears(hears.install + " " + install.syonet, "direct_mention",(bot, message) => {
+	console.log(message);
+	const ask_release = (response, convo) => {
+		console.log(response);
+		const cli_exec = child_process.spawnSync("sh", syonet_install_option, {encoding: "utf-8"});
+		convo.say("syonetで使用しているライブラリのインストールをするね");
+		if (cli_exec.error) {
+			convo.say("失敗したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stderr);
+		} else {
+			convo.say("成功したよ");
+			convo.say("結果もおしえるね");
+			convo.say(cli_exec.stdout);
+		}
+	};
+	bot.startConversation(message, ask_release);
 });
